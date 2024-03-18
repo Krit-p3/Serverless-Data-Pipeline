@@ -19,5 +19,10 @@ aws lambda create-function \
   --function-name $FUNCTION_NAME \
   --package-type Image \
   --code ImageUri=$ECR_REPOSITORY_URI/data_processing:latest \
-  --role $ROLE_ARN
+  --role $ROLE_ARN \
+  --no-cli-pager
+
+# Set Configuration 
+aws lambda update-function-configuration --function-name $FUNCTION_NAME --environment "variables={AWS_S3_ALLOW_UNSAFE_RENAME=true}" --no-cli-pager
+
 
