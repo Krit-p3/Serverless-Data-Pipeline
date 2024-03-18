@@ -15,9 +15,15 @@ Before starting, ensure you have:
 
 ## Step 2: Create AWS Lambda for Data Processing
 1. Deploy an AWS Lambda function.
+    - authenticate Docker to your Amazon ECR registry using:
+  
+            `aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 111122223333.dkr.ecr.us-east-1.amazonaws.com`
+    - Create repository in AWS ECR for lambda function
+    
+             `aws ecr create-repository --repository-name data_processing --region us-east-1 --image-scanning-configuration scanOnPush=true --image-tag-mutability MUTABLE`
+    - run the `deploy_lambda.sh` scrpit to deploy aws lambda containers
 2. Configure the Lambda function to trigger when data is put into the `raw_data` object and store the processed data in the `delta_table` object.
-3. Set the Lambda function environment variable configuration with `AWS_S3_ALLOW_UNSAFE_RENAME = true`.
-4. Assign an IAM role with appropriate permissions to the Lambda function and S3 bucket.
+3. Assign an IAM role with appropriate permissions to the Lambda function and S3 bucket.
 
 ## Step 3: Run `download_parquet.sh` Script
 1. Run the `download_parquet.sh` script to download the required files and upload them to the `raw_data` object in the S3 bucket.
